@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Http\Request;
-// use App\Models\User;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class QuestionController extends Controller
@@ -21,16 +21,6 @@ class QuestionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,7 +30,7 @@ class QuestionController extends Controller
     {
         // auth()->user()->questions()->create($request->all());
         Question::create($request->all());
-        return response('Created', 201);
+        return response('Created', Response::HTTP_CREATED);
     }
 
     /**
@@ -55,17 +45,6 @@ class QuestionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Question $question)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -74,7 +53,8 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $question->update($request->all());
+        return response('Updated', Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -86,6 +66,6 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         $question->delete();
-        return response(null, 204);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
