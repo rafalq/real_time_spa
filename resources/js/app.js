@@ -3,10 +3,11 @@ require("./bootstrap");
 window.Vue = require("vue").default;
 
 import Vuetify from "../plugins/vuetify";
-
 import AppHome from "./components/AppHome.vue";
-
 import router from "./router/router.js";
+import User from "./helpers/User";
+
+window.User = User;
 
 Vue.component("app-home", AppHome);
 
