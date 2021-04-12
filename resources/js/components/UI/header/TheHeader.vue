@@ -3,29 +3,45 @@
     <v-toolbar-title>Laravel Forum</v-toolbar-title>
 
     <v-spacer></v-spacer>
-    <navbar-link
+    <app-link
       v-for="link in links"
       :key="link.name"
       :link-path="link.path"
       :link-title="link.name"
-    ></navbar-link>
+      class="hide"
+      :class="{ display: link.show }"
+    ></app-link>
   </v-toolbar>
 </template>
 
 <script>
-import NavbarLink from "../navbar/NavbarLink.vue";
+import AppLink from "../links/AppLink.vue";
 export default {
-  components: { NavbarLink },
+  components: { AppLink },
   data() {
     return {
       links: [
-        { path: "/forum", name: "Forum" },
-        { path: "/ask", name: "Ask" },
-        { path: "/category", name: "Category" },
-        { path: "/login", name: "Login" },
-        { path: "/register", name: "Register" },
+        { path: "/forum", name: "Forum", show: true },
+        { path: "/ask", name: "Ask", show: User.loggedIn() },
+        { path: "/category", name: "Category", show: User.loggedIn() },
+        { path: "/logout", name: "Logout", show: User.loggedIn() },
+        { path: "/login", name: "Login", show: !User.loggedIn() },
+        { path: "/register", name: "Register", show: !User.loggedIn() },
       ],
     };
   },
+  created() {
+    EventBus.$on("logout", () => {
+      User.logout();
+    });
+  },
 };
 </script>
+<style scoped>
+.hide {
+  display: none;
+}
+.display {
+  display: inline-block;
+}
+</style>

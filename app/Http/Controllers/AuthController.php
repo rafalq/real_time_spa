@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,21 +21,11 @@ class AuthController extends Controller
         $this->middleware('JWT', ['except' => ['register', 'login']]);
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => 'required|unique:users|email|max:255',
-            'password' => 'required|confirmed',
-        ]);
+        User::create(array_merge($request->only('name', 'email'), ['password' => Hash::make($request->password)]));
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return $this->login($request);
+        return;
     }
 
     /**
@@ -44,8 +37,10 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (is_null($credentials['email']) || is_null($credentials['password'])) {
+            return response()->json(['error' => 'Both Fields Required'], 401);
+        } elseif (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Invalid Login Details'], 401);
         }
 
         return $this->respondWithToken($token);
