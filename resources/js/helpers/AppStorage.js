@@ -1,10 +1,10 @@
 class AppStorage {
     storeUserName(user_name) {
-        localStorage.setItem("user_name", user_name);
+        sessionStorage.setItem("user_name", user_name);
     }
 
     storeToken(token) {
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
     }
 
     store(user_name, token) {
@@ -13,16 +13,16 @@ class AppStorage {
     }
 
     clear() {
-        localStorage.removeItem("user_name");
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("user_name");
+        sessionStorage.removeItem("token");
     }
 
     getUserName() {
-        return localStorage.getItem("user_name");
+        return sessionStorage.getItem("user_name");
     }
 
     getToken() {
-        return localStorage.getItem("token");
+        return sessionStorage.getItem("token");
     }
 }
 

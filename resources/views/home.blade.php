@@ -19,9 +19,8 @@
 
 <body>
     <div id="app" data-app>
-        <app-home>
-            <v-app> </v-app>
-        </app-home>
+        <app>
+        </app>
     </div>
 </body>
 
