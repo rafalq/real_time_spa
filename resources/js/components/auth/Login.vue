@@ -1,39 +1,54 @@
 <template>
-  <div id="login-form">
+  <v-container id="login-form" class="mx-auto">
     <v-form @submit.prevent="login">
-      <v-container>
-        <h3 class="form-heading">Log Into Your Account</h3>
-        <div class="error-text" v-if="error">{{ error }}</div>
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.email"
-              label="E-mail*"
-              type="email"
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.password"
-              label="Password*"
-              type="password"
-              required
-            ></v-text-field>
-            <v-btn type="submit" id="login-btn">Login</v-btn>
-            <router-link
-              v-for="link in links"
-              :key="link.name"
-              :to="link.path"
-              class="login__registration-link"
-            >
-              {{ link.name }}
-            </router-link>
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-row class="justify-center">
+        <v-col cols="12" md="10">
+          <h3 class="text-center">Log Into Your Account</h3>
+        </v-col>
+        <v-col cols="12" md="10" v-if="error">
+          <div class="error-text">
+            <v-icon class="error-icon">mdi-alert-circle-outline</v-icon>
+            {{ error }}
+          </div>
+        </v-col>
+        <v-col cols="12" md="10">
+          <v-text-field
+            outlined
+            v-model="form.email"
+            label="Email*"
+            type="email"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="10">
+          <v-text-field
+            outlined
+            v-model="form.password"
+            label="Password*"
+            type="password"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="10">
+          <v-row>
+            <v-col cols="12" md="6">
+              <router-link
+                :key="links[0].name"
+                :to="links[0].path"
+                class="login__registration-link"
+              >
+                {{ links[0].name }}
+              </router-link>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="12" md="6">
+              <v-btn type="submit" id="login-btn">Submit</v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-form>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -86,15 +101,20 @@ export default {
 }
 
 .error-text {
-  margin: auto;
-  margin-bottom: 2rem;
-  padding: 0.3rem;
+  margin: 0;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem;
   color: rgb(255, 73, 73);
   border: 1px solid rgb(255, 73, 73);
   font-size: 1rem;
-  font-weight: 500;
   text-align: center;
 }
+
+.error-icon {
+  color: rgb(255, 73, 73);
+  margin-right: 0.5rem;
+}
+
 .login__registration-link {
   margin-top: 1rem;
   padding: 1rem;

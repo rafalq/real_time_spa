@@ -1,21 +1,20 @@
 <template>
-  <v-container fluid grid-list-md class="pa-6">
-    <v-layout row wrap>
-      <v-flex xs10 md8>
-        <h1 class="text-center grey--text">Questions</h1>
+  <v-container class="pa-6 mx-auto">
+    <v-row>
+      <v-col cols="12" md="8">
         <question
           v-for="question in questions"
           :key="question.path"
           :question-data="question"
         ></question>
-      </v-flex>
-      <v-flex>sidebar</v-flex>
-    </v-layout>
+      </v-col>
+      <v-col class="d-none d-sm-flex">sidebar</v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
-import Question from "./Question.vue";
+import Question from "./question/Question.vue";
 export default {
   components: { Question },
   created() {

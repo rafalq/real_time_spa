@@ -3,8 +3,9 @@ import VueRouter from "vue-router";
 import Login from "../components/auth/Login.vue";
 import Register from "../components/auth/Register.vue";
 import Forum from "../components/forum/Forum.vue";
+import CreateQuestion from "../components/forum/question/CreateQuestion.vue";
 import Logout from "../components/auth/Logout.vue";
-import Read from "../components/forum/Read.vue";
+import ReadQuestion from "../components/forum/question/ReadQuestion.vue";
 
 Vue.use(VueRouter);
 
@@ -12,8 +13,9 @@ const routes = [
     { path: "/login", component: Login, name: "login" },
     { path: "/register", component: Register, name: "register" },
     { path: "/forum", component: Forum, name: "forum" },
+    { path: "/ask", component: CreateQuestion, name: "ask" },
     { path: "/logout", component: Logout, name: "logout" },
-    { path: "/question/:slug", component: Read, name: "read" }
+    { path: "/question/:slug", component: ReadQuestion, name: "read" }
 ];
 
 const router = new VueRouter({

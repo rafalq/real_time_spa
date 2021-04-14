@@ -1,95 +1,111 @@
 <template>
-  <div id="register-form">
-    <v-form @submit.prevent="register">
-      <v-container>
-        <v-snackbar
-          v-model="snackbar"
-          :value="true"
-          absolute
-          centered
-          bottom
-          outlined
-          color="success"
-          elevation="24"
+  <v-container id="register-form" class="mx-auto">
+    <v-snackbar
+      v-model="snackbar"
+      :value="true"
+      absolute
+      centered
+      bottom
+      outlined
+      color="success"
+      elevation="24"
+    >
+      <template v-slot:action="{ attrs }">
+        {{ text }}
+        <router-link
+          :key="links[1].name"
+          :to="links[1].path"
+          class="registration__snackbar-link"
         >
-          <template v-slot:action="{ attrs }">
-            {{ text }}
-            <v-btn
-              text
-              v-bind="attrs"
-              @click="snackbar = false"
-              relative
-              top
-              right
-            >
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </template>
-        </v-snackbar>
+          {{ links[1].name }}
+        </router-link>
+        <v-btn text v-bind="attrs" @click="snackbar = false" relative top right>
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
 
-        <h3 class="form-heading">Create New Account</h3>
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.name"
-              name="name"
-              label="Name*"
-              type="text"
-              required
-            ></v-text-field>
-            <span class="error-text" v-if="errors.name">
-              {{ errors.name[0] }}
-            </span>
-          </v-col>
+    <v-form @submit.prevent="register">
+      <v-row class="justify-center">
+        <v-col cols="12" md="10">
+          <h3 class="text-center">Create New Account</h3>
+        </v-col>
 
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.email"
-              name="email"
-              label="E-mail*"
-              type="email"
-              required
-            ></v-text-field>
-            <span class="error-text" v-if="errors.email">
-              {{ errors.email[0] }}
-            </span>
-          </v-col>
-        </v-row>
+        <v-col cols="12" md="10">
+          <span class="error-text" v-if="errors.name">
+            {{ errors.name[0] }}
+          </span>
+          <v-text-field
+            outlined
+            v-model="form.name"
+            label="Name*"
+            type="text"
+            required
+            class="mt-2"
+          ></v-text-field>
+        </v-col>
 
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.password"
-              name="password"
-              label="Password*"
-              type="password"
-              required
-            ></v-text-field>
-            <span class="error-text" v-if="errors.password">
-              {{ errors.password[0] }}
-            </span>
-          </v-col>
+        <v-col cols="12" md="10">
+          <span class="error-text" v-if="errors.email">
+            {{ errors.email[0] }}
+          </span>
+          <v-text-field
+            outlined
+            v-model="form.email"
+            label="Email*"
+            type="email"
+            required
+            class="mt-2"
+          ></v-text-field>
+        </v-col>
 
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.password_confirmation"
-              label="Confirm Password*"
-              type="password"
-              required
-            ></v-text-field>
-            <v-btn type="submit" id="register-btn">Register</v-btn>
-            <router-link
-              :key="links[0].name"
-              :to="links[0].path"
-              class="registration__login-link"
-            >
-              {{ links[0].name }}
-            </router-link>
-          </v-col>
-        </v-row>
-      </v-container>
+        <v-col cols="12" md="10">
+          <span class="error-text" v-if="errors.password">
+            {{ errors.password[0] }}
+          </span>
+          <v-text-field
+            outlined
+            v-model="form.password"
+            label="Password*"
+            type="password"
+            required
+            class="mt-2"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="10">
+          <span class="error-text" v-if="errors.password_confirmation">
+            {{ errors.password_confirmation[0] }}
+          </span>
+          <v-text-field
+            outlined
+            v-model="form.password_confirmation"
+            label="Confirm Password*"
+            type="password"
+            required
+            class="mt-2"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="10">
+          <v-row>
+            <v-col cols="12" md="6">
+              <router-link
+                :key="links[0].name"
+                :to="links[0].path"
+                class="registration__login-link"
+              >
+                {{ links[0].name }}
+              </router-link>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="12" md="6">
+              <v-btn type="submit" id="register-btn">Submit</v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-form>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -99,7 +115,10 @@ export default {
       snackbar: false,
       text: `Registration succesfull. You can now`,
       errors: {},
-      links: [{ path: "/login", name: "Already Have An Account? LOGIN" }],
+      links: [
+        { path: "/login", name: "Already Have An Account? LOGIN" },
+        { path: "/login", name: "LOGIN" },
+      ],
       form: {
         name: "",
         email: "",
@@ -140,9 +159,6 @@ export default {
   padding: 5rem 10rem;
   width: 100%;
 }
-.form-heading {
-  padding-bottom: 2.5rem;
-}
 
 #register-btn {
   float: right;
@@ -161,7 +177,18 @@ export default {
   font-size: 0.8rem;
   padding-left: 0;
 }
-.registration__login-linkk:hover {
+.registration__login-link:hover {
   color: rgb(41, 41, 41);
+}
+
+.registration__snackbar-link {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  text-decoration: none;
+  color: #4caf50;
+  font-size: 1rem;
+}
+.registration__snackbar-link:hover {
+  color: #428b44;
 }
 </style>

@@ -1,9 +1,5 @@
   <template>
   <div>
-    <v-navigation-drawer app>
-      <!-- -->
-    </v-navigation-drawer>
-
     <v-app-bar
       app
       :collapse="!collapseOnScroll"
@@ -54,7 +50,7 @@ export default {
 .nav-link {
   padding: 1rem;
   text-decoration: none;
-  color: rgb(201, 201, 201);
+  color: rgb(235, 235, 235);
 }
 .nav-link:hover {
   color: rgb(255, 255, 255);
