@@ -121,7 +121,9 @@ export default {
   },
   computed: {
     body() {
-      return marked.parse(this.questionData.body);
+      if (this.questionData.body !== null) {
+        return marked.parse(this.questionData.body);
+      }
     },
   },
   methods: {

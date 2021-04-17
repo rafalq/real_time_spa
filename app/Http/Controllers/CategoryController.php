@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Http\Requests\CreateCategoryRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,22 +30,12 @@ class CategoryController extends Controller
         return CategoryResource::collection(Category::latest()->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(CreateCategoryRequest $request)
     {
-        // Category::create($request->all());
+        $category = Category::create(array_merge($request->only('name'), ['slug' => str_slug($request->name)]));
 
-        $category = new Category;
-        $category->name = $request->name;
-        $category->slug = str_slug($request->name);
-        $category->save();
-
-        return response('Created', Response::HTTP_CREATED);
+        return response(new CategoryResource($category), Response::HTTP_CREATED);
     }
 
     /**
@@ -65,16 +56,17 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CreateCategoryRequest $request, Category $category)
     {
-        $category->update(
-            [
-                'name' => $request->name,
-                'slug' => str_slug($request->name)
-            ]
-        );
+        // $category->update(
+        //     [
+        //         'name' => $request->name,
+        //         'slug' => str_slug($request->name)
+        //     ]
+        // );
+        $category->update(array_merge($request->only('name'), ['slug' => str_slug($request->name)]));
 
-        return response('Updated', Response::HTTP_ACCEPTED);
+        return response(new CategoryResource($category), Response::HTTP_ACCEPTED);
     }
 
     /**

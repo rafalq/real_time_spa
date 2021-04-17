@@ -73,11 +73,11 @@ export default {
     return {
       categories: [],
       errors: {},
-      links: [{ path: "/forum", name: "Back To Forum" }],
+      links: [{ path: "/forum", name: "Forum" }],
       form: {
         title: "",
         category_id: null,
-        body: "",
+        body: null,
       },
     };
   },
@@ -123,7 +123,7 @@ export default {
   font-size: 1rem;
   padding-left: 0;
 }
-.create__forum-linkk:hover {
+.create__forum-link:hover {
   color: rgb(41, 41, 41);
 }
 </style>

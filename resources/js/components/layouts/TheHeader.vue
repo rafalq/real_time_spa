@@ -32,7 +32,6 @@ export default {
       links: [
         { path: "/forum", name: "Forum", show: true },
         { path: "/ask", name: "Ask", show: User.loggedIn() },
-        { path: "/category", name: "Category", show: User.loggedIn() },
         { path: "/logout", name: "Logout", show: User.loggedIn() },
         { path: "/login", name: "Login", show: !User.loggedIn() },
         { path: "/register", name: "Register", show: !User.loggedIn() },
