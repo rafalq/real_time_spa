@@ -1,6 +1,6 @@
 <template>
   <panel-base>
-    <template v-slot:header>Categories</template>
+    <template v-slot:header>CATEGORIES</template>
     <div v-if="checkIfLoggedIn()">
       <admin-category-list v-if="checkifAdmin()"></admin-category-list>
       <category-list v-else></category-list>

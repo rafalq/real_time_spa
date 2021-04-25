@@ -1,35 +1,29 @@
 <template>
-  <v-container id="login-form" class="mx-auto">
-    <v-form @submit.prevent="login">
-      <v-row class="justify-center">
-        <v-col cols="12" md="10">
-          <h3 class="text-center">Log Into Your Account</h3>
-        </v-col>
-        <v-col cols="12" md="10" v-if="error">
-          <div class="error-text">
-            <v-icon class="error-icon">mdi-alert-circle-outline</v-icon>
-            {{ error }}
-          </div>
-        </v-col>
-        <v-col cols="12" md="10">
-          <v-text-field
-            outlined
-            v-model="form.email"
-            label="Email*"
-            type="email"
-          ></v-text-field>
-        </v-col>
+  <v-row class="justify-center py-10">
+    <v-col cols="12" md="6">
+      <v-form @submit.prevent="login">
+        <h3 class="text-center mb-4">Log Into Your Account</h3>
 
-        <v-col cols="12" md="10">
-          <v-text-field
-            outlined
-            v-model="form.password"
-            label="Password*"
-            type="password"
-          ></v-text-field>
-        </v-col>
+        <div class="error-text mt-2" v-if="error">
+          <v-icon class="error-icon">mdi-alert-circle-outline</v-icon>
+          {{ error }}
+        </div>
 
-        <v-col cols="12" md="10">
+        <v-text-field
+          outlined
+          v-model="form.email"
+          label="Email*"
+          type="email"
+        ></v-text-field>
+
+        <v-text-field
+          outlined
+          v-model="form.password"
+          label="Password*"
+          type="password"
+        ></v-text-field>
+
+        <v-col cols="12">
           <v-row>
             <v-col cols="12" md="6">
               <router-link
@@ -42,13 +36,15 @@
             </v-col>
             <v-spacer></v-spacer>
             <v-col cols="12" md="6">
-              <v-btn type="submit" id="login-btn">Submit</v-btn>
+              <v-btn type="submit" id="login-btn" color="blue darken-1"
+                >Login</v-btn
+              >
             </v-col>
           </v-row>
         </v-col>
-      </v-row>
-    </v-form>
-  </v-container>
+      </v-form>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -86,14 +82,6 @@ export default {
 </script>
 
 <style scoped>
-#login-form {
-  padding: 5rem 10rem;
-  width: 100%;
-}
-.form-heading {
-  padding-bottom: 2.5rem;
-}
-
 #login-btn {
   float: right;
   background-color: rgb(109, 109, 255);

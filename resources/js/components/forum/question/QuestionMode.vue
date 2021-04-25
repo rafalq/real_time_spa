@@ -1,16 +1,19 @@
 <template>
   <div v-if="question">
-    <edit-question v-if="editMode" :question-data="question"></edit-question>
-    <show-question v-else :question-data="question"></show-question>
+    <edit-question-mode
+      v-if="editMode"
+      :question-data="question"
+    ></edit-question-mode>
+    <show-question-mode v-else :question-data="question"></show-question-mode>
   </div>
 </template>
 
 <script>
-import ShowQuestion from "./ShowQuestion.vue";
-import EditQuestion from "./EditQuestion.vue";
+import EditQuestionMode from "./mode/EditQuestionMode.vue";
+import ShowQuestionMode from "./mode/ShowQuestionMode.vue";
 
 export default {
-  components: { ShowQuestion, EditQuestion },
+  components: { EditQuestionMode, ShowQuestionMode },
   props: ["questionData"],
   data() {
     return {
@@ -30,8 +33,8 @@ export default {
         .catch((error) => console.error(error.response.data));
     },
     listen() {
-      EventBus.$on("startEdit", () => (this.editMode = true));
-      EventBus.$on("cancelEdit", () => (this.editMode = false));
+      EventBus.$on("start-edit", () => (this.editMode = true));
+      // EventBus.$on("cancel-edit", () => (this.editMode = false));
     },
   },
 };

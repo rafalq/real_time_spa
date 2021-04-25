@@ -1,6 +1,11 @@
 <template>
   <v-container class="mx-auto">
-    <v-btn text class="red--text lighten-3 mb-4" @click="cancelEdit">
+    <v-btn
+      text
+      class="red--text lighten-3 mb-4"
+      type="button"
+      @click="cancelEditQuestionMode"
+    >
       <v-icon class="mr-1">mdi-close-circle-outline</v-icon>
       Cancel
     </v-btn>
@@ -8,17 +13,13 @@
     <v-form @submit.prevent="updateQuestion">
       <v-row class="justify-center">
         <v-col cols="12" md="8">
-          <h3 class="text-center">Update Question</h3>
-        </v-col>
-
-        <v-col cols="12" md="8">
           <span class="error-text" v-if="errors.title">
             {{ errors.title[0] }}
           </span>
           <v-text-field
             outlined
-            v-model="form.title"
-            label="Question*"
+            v-model.lazy="form.title"
+            label="Title*"
             type="text"
             required
             class="mt-2"
@@ -30,15 +31,16 @@
             {{ errors.body[0] }}
           </span>
           <vue-simplemde
-            v-model="form.body"
+            v-model.lazy="form.body"
             ref="markdownEditor"
-            label="More About Your Question"
             class="mt-2"
           />
         </v-col>
 
         <v-col cols="12" md="8">
-          <v-btn type="submit" id="submit-btn">Submit</v-btn>
+          <v-btn type="submit" id="submit-btn" class="primary white--tezt"
+            >Update Question</v-btn
+          >
         </v-col>
       </v-row>
     </v-form>
@@ -52,7 +54,6 @@ export default {
     return {
       errors: {},
       form: {
-        title: "",
         body: "",
       },
     };
@@ -61,34 +62,29 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "forum" });
     }
+    this.form = this.questionData;
   },
   methods: {
     updateQuestion() {
       axios
         .patch(`/api/question/${this.form.slug}`, this.form)
         .then((response) => {
-          this.cancelEdit();
           this.errors = {};
+          this.cancelEditQuestionMode();
         })
         .catch((error) => (this.errors = error.response.data.errors));
     },
-    cancelEdit() {
-      EventBus.$emit("cancelEdit");
+
+    cancelEditQuestionMode() {
+      location.reload();
     },
-  },
-  mounted() {
-    this.form = this.questionData;
   },
 };
 </script>
 
 <style scoped>
-@import "~simplemde/dist/simplemde.min.css";
-
 #submit-btn {
   float: right;
-  background-color: rgb(109, 109, 255);
-  color: #fff;
 }
 .error-text {
   color: red;

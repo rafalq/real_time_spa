@@ -14,28 +14,19 @@
       >
         {{ questionData.title }}
       </router-link>
-      <div class="mt-2">
-        <v-row align="center" class="mx-0 mt-1">
-          <v-icon color="blue lighten-2" size="16">mdi-thumb-up</v-icon>
-          <div class="grey--text ml-1 subtitle-2">415</div>
-        </v-row>
-      </div>
     </v-card-title>
     <v-card-text>
       <div class="mb-4 subtitle-1 ml-6">
         <span class="caption">by</span>
         {{ questionData.user_name }} •
-        <span class="caption">{{ questionData.created_at }}</span>
+        <span class="caption">{{ questionData.updated_at }}</span>
       </div>
       <div class="d-flex flex-row-reverse">
-        <v-btn text class="pt-4 caption">
-          <router-link
-            :to="questionData.path"
-            class="blue--text lighten-3 mb-4 no-decoration"
-          >
-            Read More...
-          </router-link>
-        </v-btn>
+        <router-link
+          :to="questionData.path"
+          class="blue--text lighten-3 mb-4 no-decoration"
+          ><v-btn text class="py-2 caption"> Read More... </v-btn>
+        </router-link>
       </div>
     </v-card-text>
   </v-card>

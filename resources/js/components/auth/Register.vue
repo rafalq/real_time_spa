@@ -1,5 +1,5 @@
 <template>
-  <v-container id="register-form" class="mx-auto">
+  <div>
     <v-snackbar
       v-model="snackbar"
       :value="true"
@@ -25,13 +25,11 @@
       </template>
     </v-snackbar>
 
-    <v-form @submit.prevent="register">
-      <v-row class="justify-center">
-        <v-col cols="12" md="10">
-          <h3 class="text-center">Create New Account</h3>
-        </v-col>
+    <v-row class="justify-center py-10">
+      <v-col cols="12" md="6">
+        <v-form @submit.prevent="register">
+          <h3 class="text-center mb-4">Create New Account</h3>
 
-        <v-col cols="12" md="10">
           <span class="error-text" v-if="errors.name">
             {{ errors.name[0] }}
           </span>
@@ -41,11 +39,8 @@
             label="Name*"
             type="text"
             required
-            class="mt-2"
           ></v-text-field>
-        </v-col>
 
-        <v-col cols="12" md="10">
           <span class="error-text" v-if="errors.email">
             {{ errors.email[0] }}
           </span>
@@ -55,11 +50,8 @@
             label="Email*"
             type="email"
             required
-            class="mt-2"
           ></v-text-field>
-        </v-col>
 
-        <v-col cols="12" md="10">
           <span class="error-text" v-if="errors.password">
             {{ errors.password[0] }}
           </span>
@@ -69,11 +61,8 @@
             label="Password*"
             type="password"
             required
-            class="mt-2"
           ></v-text-field>
-        </v-col>
 
-        <v-col cols="12" md="10">
           <span class="error-text" v-if="errors.password_confirmation">
             {{ errors.password_confirmation[0] }}
           </span>
@@ -83,29 +72,31 @@
             label="Confirm Password*"
             type="password"
             required
-            class="mt-2"
           ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="10">
-          <v-row>
-            <v-col cols="12" md="6">
-              <router-link
-                :key="links[0].name"
-                :to="links[0].path"
-                class="registration__login-link"
-              >
-                {{ links[0].name }}
-              </router-link>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="12" md="6">
-              <v-btn type="submit" id="register-btn">Submit</v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-container>
+
+          <v-col cols="12">
+            <v-row>
+              <v-col cols="12" md="6">
+                <router-link
+                  :key="links[0].name"
+                  :to="links[0].path"
+                  class="registration__login-link"
+                >
+                  {{ links[0].name }}
+                </router-link>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col cols="12" md="6">
+                <v-btn type="submit" id="register-btn" class="blue darken-1"
+                  >Register</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-form>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -155,11 +146,6 @@ export default {
 </script>
 
 <style scoped>
-#register-form {
-  padding: 5rem 10rem;
-  width: 100%;
-}
-
 #register-btn {
   float: right;
   background-color: rgb(109, 109, 255);

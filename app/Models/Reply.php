@@ -9,7 +9,18 @@ class Reply extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($reply) {
+            $reply->user_id = auth()->id();
+        });
+    }
+
+    protected $fillable = [
+        'body',
+    ];
 
     public function question()
     {

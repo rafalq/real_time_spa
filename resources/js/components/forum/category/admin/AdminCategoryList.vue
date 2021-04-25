@@ -1,10 +1,9 @@
 <template>
   <div class="d-flex flex-wrap pt-4">
-    <div class="pa-0 ma-0" v-if="isLoggedIn()">
+    <div class="pa-0">
       <v-dialog
         v-model="dialog"
-        fullscreen
-        hide-overlay
+        max-width="30rem"
         transition="dialog-bottom-transition"
       >
         <template v-slot:activator="{ on, attrs }">
@@ -35,21 +34,23 @@
             </v-toolbar>
 
             <v-card-text>
-              <v-row>
-                <v-col cols="12">
-                  <span class="error-text" v-if="errors.name">
-                    {{ errors.name[0] }}
-                  </span>
-                  <v-text-field
-                    outlined
-                    v-model="form.name"
-                    label="Category Name*"
-                    type="text"
-                    required
-                    class="mt-2"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+              <v-container fill-height>
+                <v-row>
+                  <v-col cols="12">
+                    <span class="error-text" v-if="errors.name">
+                      {{ errors.name[0] }}
+                    </span>
+                    <v-text-field
+                      outlined
+                      v-model="form.name"
+                      label="Category Name*"
+                      type="text"
+                      class="mt-2"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-card-text>
           </v-form>
         </v-card>
@@ -88,8 +89,11 @@ export default {
   },
   watch: {
     dialog(value) {
-      if (value === false && this.form.name.length === 0) {
+      if (value === false) {
         this.errors = {};
+        this.form.name = "";
+        this.editSlug = null;
+        return;
       }
     },
   },
@@ -122,7 +126,6 @@ export default {
         });
     },
     updateCategory() {
-      // console.log(this.categoryIndex);
       axios
         .patch(`/api/category/${this.editSlug}`, this.form)
         .then((response) => {
@@ -142,10 +145,8 @@ export default {
       this.dialog = true;
       this.dialogTitle = "Update Category";
       this.form.name = this.categories[index].name;
-      console.log(this.form.name);
       this.editSlug = this.categories[index].slug;
       this.categoryIndex = index;
-      // this.categories.splice(index, 1);
     },
     deleteCategory(slug, index) {
       axios

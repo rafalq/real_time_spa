@@ -13,10 +13,8 @@
     <v-form @submit.prevent="createQuestion">
       <v-row class="justify-center">
         <v-col cols="12" md="8">
-          <h3 class="text-center">Ask Question</h3>
-        </v-col>
+          <h3 class="text-center mb-4">Ask Question</h3>
 
-        <v-col cols="12" md="8">
           <span class="error-text" v-if="errors.title">
             {{ errors.title[0] }}
           </span>
@@ -28,9 +26,7 @@
             required
             class="mt-2"
           ></v-text-field>
-        </v-col>
 
-        <v-col cols="12" md="8">
           <span class="error-text" v-if="errors.category_id">
             {{ errors.category_id[0] }}
           </span>
@@ -45,9 +41,7 @@
             outlined
             class="mt-2"
           ></v-select>
-        </v-col>
 
-        <v-col cols="12" md="8">
           <span class="error-text" v-if="errors.body">
             {{ errors.body[0] }}
           </span>
@@ -57,10 +51,10 @@
             label="More About Your Question"
             class="mt-2"
           />
-        </v-col>
 
-        <v-col cols="12" md="8">
-          <v-btn type="submit" id="submit-btn">Submit</v-btn>
+          <v-btn type="submit" id="submit-btn" class="blue darken-1"
+            >Send Question</v-btn
+          >
         </v-col>
       </v-row>
     </v-form>

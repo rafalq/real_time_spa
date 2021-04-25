@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-chip label class="grey lighten-1 ma-1 py-0">
+    <v-chip label class="grey lighten-2 ma-1 py-0">
       <div class="d-flex">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -11,7 +11,7 @@
               @click="$emit('edit')"
               class="green--text lighten-2"
             >
-              mdi-update
+              mdi-circle-edit-outline
             </v-icon>
           </template>
           <span>Edit Category</span>
