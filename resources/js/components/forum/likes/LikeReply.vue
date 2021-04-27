@@ -61,5 +61,12 @@ export default {
       }
     },
   },
+  mounted() {
+    Echo.channel("like-channel").listen("ReplyLikedEvent", (e) => {
+      if (this.replyData.id === e.id) {
+        e.type === 1 ? this.likeCounter++ : this.likeCounter--;
+      }
+    });
+  },
 };
 </script>

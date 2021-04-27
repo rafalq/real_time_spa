@@ -67,6 +67,12 @@ export default {
   mounted() {
     if (User.loggedIn()) {
       this.getNotifications();
+      Echo.private("App.Models.User." + User.getId()).notification(
+        (notification) => {
+          this.unreadNotifications.unshift(notification);
+          this.unreadNotificationCounter++;
+        }
+      );
     }
   },
 };

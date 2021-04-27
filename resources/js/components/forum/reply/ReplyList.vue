@@ -1,5 +1,5 @@
 te<template>
-  <div v-if="repliesData">
+  <div v-if="repliesData" class="pb-4">
     <reply-item
       v-for="reply in repliesData"
       :key="reply.id"
@@ -112,6 +112,19 @@ export default {
     listen() {
       EventBus.$on("new-reply", (reply) => {
         this.repliesData.unshift(reply);
+      });
+
+      Echo.private("App.Models.User." + User.getId()).notification(
+        (notification) => {
+          this.repliesData.unshift(notification.reply);
+        }
+      );
+
+      Echo.channel("reply-deleted-channel").listen("ReplyDeletedEvent", (e) => {
+        const replyIndex = this.repliesData.findIndex(
+          (reply) => reply.id === e.id
+        );
+        this.repliesData.splice(replyIndex, 1);
       });
     },
     userOwn(userId) {
