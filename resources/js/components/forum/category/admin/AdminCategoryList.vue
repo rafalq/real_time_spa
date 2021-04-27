@@ -79,7 +79,6 @@ export default {
       editSlug: null,
       categoryIndex: null,
       notifications: false,
-      sound: true,
       widgets: false,
       errors: {},
       form: {

@@ -1,16 +1,10 @@
   <template>
   <div>
-    <v-app-bar
-      app
-      :collapse="!collapseOnScroll"
-      :collapse-on-scroll="collapseOnScroll"
-      absolute
-      color="blue darken-1"
-      dark
-    >
+    <v-app-bar app absolute color="blue darken-1" dark>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Laravel Forum</v-toolbar-title>
       <v-spacer></v-spacer>
+      <reply-notification v-if="loggedIn"></reply-notification>
       <router-link
         v-for="link in links"
         :key="link.name"
@@ -25,10 +19,12 @@
 </template>
 
 <script>
+import ReplyNotification from "../forum/notification/ReplyNotification.vue";
 export default {
+  components: { ReplyNotification },
   data() {
     return {
-      collapseOnScroll: true,
+      loggedIn: User.loggedIn(),
       links: [
         { path: "/forum", name: "Forum", show: true },
         { path: "/ask", name: "Ask", show: User.loggedIn() },

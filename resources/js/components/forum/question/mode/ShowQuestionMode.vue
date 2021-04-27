@@ -1,18 +1,17 @@
 <template>
   <v-container>
-    <v-btn text class="mb-4" @click="cancelEdit"
-      ><router-link
-        to="/forum"
-        class="grey--text lighten-3 question__forum-link"
-      >
+    <router-link to="/forum" class="question__forum-link">
+      <v-btn text @click="cancelEdit" class="grey--text lighten-3 mb-4">
         <v-icon class="mr-1">mdi-arrow-left-circle</v-icon>
         FORUM
-      </router-link>
-    </v-btn>
+      </v-btn>
+    </router-link>
 
     <v-row justify="space-around">
       <v-col cols="12" md="8">
-        <v-card>
+        <v-card
+          :class="{ 'user-own-identifier': userOwn(questionData.user_id) }"
+        >
           <v-app-bar flat color="rgba(0, 0, 0, 0)" class="pt-4">
             <v-avatar size="50">
               <img
@@ -135,8 +134,8 @@
   </v-container>
 </template>
 <script>
-// import ReplyDialogForm from "../reply/ReplyDialogForm.vue";
 import ReplyList from "../../reply/ReplyList.vue";
+
 export default {
   props: ["questionData"],
   components: { ReplyList },
@@ -152,6 +151,7 @@ export default {
     };
   },
   mounted() {
+    setTimeout(() => (this.overlay = false), 1000);
     this.question = this.questionData;
     this.replyCount = this.questionData.reply_count;
     this.listenReplyDeleted();
@@ -217,11 +217,20 @@ export default {
         })
         .catch((error) => (this.errors = error.response.data.errors));
     },
+    userOwn(userId) {
+      if (User.own(userId)) {
+        return true;
+      }
+      return false;
+    },
   },
 };
 </script>
 
 <style scoped>
+.user-own-identifier {
+  border: 0.1rem solid green;
+}
 .question__forum-link {
   text-decoration: none;
 }

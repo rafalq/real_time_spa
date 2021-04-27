@@ -1,5 +1,10 @@
 <template>
-  <v-card class="mx-auto mt-6">
+  <v-card
+    class="mx-auto mt-6"
+    :class="{
+      'user-own-identifier': loggedIn && userOwn(questionData.user_id),
+    }"
+  >
     <template slot="progress">
       <v-progress-linear
         color="deep-purple"
@@ -14,6 +19,14 @@
       >
         {{ questionData.title }}
       </router-link>
+      <div class="mt-2">
+        <v-row align="center" class="mx-0 mt-1">
+          <v-icon color="blue" size="16">mdi-tag</v-icon>
+          <div class="grey--text ml-1 subtitle-2">
+            {{ questionData.category }}
+          </div>
+        </v-row>
+      </div>
     </v-card-title>
     <v-card-text>
       <div class="mb-4 subtitle-1 ml-6">
@@ -36,15 +49,18 @@
 export default {
   props: ["questionData"],
   data: () => ({
+    loggedIn: User.loggedIn(),
     selection: 1,
     loginLink: "/login",
   }),
 
   methods: {
-    // reserve() {
-    //   this.loading = true;
-    //   setTimeout(() => (this.loading = false), 2000);
-    // },
+    userOwn(userId) {
+      if (User.own(userId)) {
+        return true;
+      }
+      return false;
+    },
   },
 };
 </script>
@@ -52,5 +68,8 @@ export default {
 <style scoped>
 .no-decoration {
   text-decoration: none;
+}
+.user-own-identifier {
+  border: 0.1rem solid green;
 }
 </style>

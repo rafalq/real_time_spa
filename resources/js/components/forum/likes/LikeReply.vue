@@ -1,5 +1,5 @@
 <template>
-  <div class="my-2">
+  <div class="ma-2">
     <div class="d-flex align-center">
       <v-btn
         color="primary"

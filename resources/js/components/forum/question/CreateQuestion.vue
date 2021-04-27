@@ -101,8 +101,6 @@ export default {
 </script>
 
 <style scoped>
-@import "~simplemde/dist/simplemde.min.css";
-
 #submit-btn {
   float: right;
   background-color: rgb(109, 109, 255);

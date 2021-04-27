@@ -22,25 +22,5 @@ import TheMain from "./layouts/TheMain.vue";
 
 export default {
   components: { TheHeader, TheFooter, TheMain, CategoryPanel },
-  // data() {
-  //   return {
-  //     categories: [],
-  //   };
-  // },
-  // provide() {
-  //   return {
-  //     categories: this.categories,
-  //   };
-  // },
-  // created() {
-  //   axios
-  //     .get("/api/category")
-  //     .then((response) => {
-  //       this.categories = response.data.data;
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response.data);
-  //     });
-  // },
 };
 </script>

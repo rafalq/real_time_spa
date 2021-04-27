@@ -1,5 +1,10 @@
 <template>
   <div>
+    <v-overlay :opacity="1" :value="overlay">
+      <v-progress-circular indeterminate size="64">
+        Loading...
+      </v-progress-circular>
+    </v-overlay>
     <v-container class="pa-6 mx-auto">
       <v-row justify-md="center">
         <v-col cols="12" md="8">
@@ -22,15 +27,14 @@ export default {
   components: {
     Question,
   },
-  created() {
+  mounted() {
+    setTimeout(() => (this.overlay = false), 1000);
     this.getAllQuestions();
-  },
-  provide() {
-    return {};
   },
   data() {
     return {
       questions: {},
+      overlay: true,
     };
   },
   methods: {

@@ -58,12 +58,7 @@ class CategoryController extends Controller
      */
     public function update(CreateCategoryRequest $request, Category $category)
     {
-        // $category->update(
-        //     [
-        //         'name' => $request->name,
-        //         'slug' => str_slug($request->name)
-        //     ]
-        // );
+
         $category->update(array_merge($request->only('name'), ['slug' => str_slug($request->name)]));
 
         return response(new CategoryResource($category), Response::HTTP_ACCEPTED);

@@ -7,6 +7,7 @@ te<template>
       :reply-user-name="reply.user"
       :reply-date="reply.updated_at"
       :reply-body="parseReplyBody(reply.reply)"
+      :class="{ 'user-own-identifier': userOwn(reply.user_id) }"
     >
       <div class="d-flex">
         <div>
@@ -78,11 +79,9 @@ te<template>
 <script>
 import LikeReply from "../likes/LikeReply.vue";
 import DeleteReply from "./actions/DeleteReply.vue";
-// import EditReply from "./actions/EditReply.vue";
 import ReplyItem from "./ReplyItem.vue";
 export default {
   components: {
-    // EditReply,
     DeleteReply,
     ReplyItem,
     LikeReply,
@@ -91,11 +90,6 @@ export default {
   created() {
     this.listen();
   },
-  // computed: {
-  //   updatedDialogReplyInput() {
-  //     return this.$store.state.dialogReplyInput;
-  //   },
-  // },
   data() {
     return {
       questionData: this.question,
@@ -112,7 +106,6 @@ export default {
       },
       error: null,
       replyDialog: false,
-      // replyInput: null,
     };
   },
   methods: {
@@ -195,3 +188,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.user-own-identifier {
+  border: 0.1rem solid green;
+}
+</style>
