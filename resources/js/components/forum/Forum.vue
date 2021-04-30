@@ -28,7 +28,7 @@ export default {
     Question,
   },
   mounted() {
-    setTimeout(() => (this.overlay = false), 1000);
+    setTimeout(() => (this.overlay = false), 500);
     this.getAllQuestions();
   },
   data() {

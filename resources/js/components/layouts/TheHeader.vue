@@ -1,8 +1,11 @@
   <template>
-  <div>
+  <div id="parallax-wrapper">
     <v-app-bar app absolute color="blue darken-1" dark>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-toolbar-title>Laravel Forum</v-toolbar-title>
+      <router-link class="nav-link" to="/"
+        ><v-toolbar-title
+          >Laravel Forum <v-icon>mdi-laravel</v-icon></v-toolbar-title
+        >
+      </router-link>
       <v-spacer></v-spacer>
       <reply-notification v-if="loggedIn"></reply-notification>
       <router-link
@@ -20,6 +23,7 @@
 
 <script>
 import ReplyNotification from "../forum/notification/ReplyNotification.vue";
+
 export default {
   components: { ReplyNotification },
   data() {
@@ -42,6 +46,9 @@ export default {
 };
 </script>
 <style scoped>
+#parallax-wrapper {
+  min-height: auto;
+}
 .nav-link {
   padding: 1rem;
   text-decoration: none;

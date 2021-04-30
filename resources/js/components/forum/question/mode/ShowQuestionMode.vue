@@ -150,13 +150,6 @@ export default {
       errors: {},
     };
   },
-  mounted() {
-    setTimeout(() => (this.overlay = false), 1000);
-    this.question = this.questionData;
-    this.replyCount = this.questionData.reply_count;
-    this.listenReplyDeleted();
-    this.listenReplyCreated();
-  },
   computed: {
     body() {
       if (this.questionData.body !== null) {
@@ -174,12 +167,15 @@ export default {
   methods: {
     listenReplyDeleted() {
       EventBus.$on("update-reply-counter-remove", () => {
-        return (this.replyCount -= 1);
+        return this.replyCount--;
       });
     },
     listenReplyCreated() {
+      EventBus.$on("update-reply-counter-added", () => {
+        return this.replyCount++;
+      });
       EventBus.$on("new-reply", () => {
-        return (this.replyCount += 1);
+        return this.replyCount++;
       });
     },
     closeDialog() {
@@ -199,6 +195,8 @@ export default {
         .then((response) => {
           this.$router.push("/forum");
         })
+        // // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => {
           console.log(error.response.data);
         });
@@ -215,6 +213,8 @@ export default {
           this.errors = {};
           this.dialog = false;
         })
+        // // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => (this.errors = error.response.data.errors));
     },
     userOwn(userId) {
@@ -223,6 +223,17 @@ export default {
       }
       return false;
     },
+  },
+  mounted() {
+    setTimeout(() => (this.overlay = false), 1000);
+    this.question = this.questionData;
+    this.replyCount = this.questionData.reply_count;
+    this.listenReplyDeleted();
+    this.listenReplyCreated();
+    // -------------------- counter --------------------
+    // Echo.private("notify-" + User.getId()).notification((notification) => {
+    //   this.replyCount++;
+    // });
   },
 };
 </script>

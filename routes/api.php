@@ -9,9 +9,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotificationController;
 
 
-Route::apiResource('/question', QuestionController::class);
-Route::apiResource('/category', CategoryController::class);
-Route::apiResource('/question/{question}/reply', ReplyController::class);
+Route::apiResources([
+    'question' => QuestionController::class,
+    'category' => CategoryController::class,
+    'question/{question}/reply' => ReplyController::class
+]);
 
 Route::post('like/{reply}', [LikeController::class, 'like']);
 Route::delete('like/{reply}', [LikeController::class, 'unlike']);

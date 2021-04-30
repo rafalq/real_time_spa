@@ -19,6 +19,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\ReplyLikedEvent' => ['App\Listeners\ReplyLikedEventListener'],
         'App\Events\ReplyDeletedEvent' => ['App\Listeners\ReplyDeletedEventListener'],
+        'App\Events\ReplyAddedEvent' => ['App\Listeners\ReplyAddedEventListener'],
         // Registered::class => [
         //     SendEmailVerificationNotification::class,
         // ],

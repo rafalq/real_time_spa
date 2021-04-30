@@ -1,9 +1,7 @@
 <template>
   <v-main>
     <slot name="subnav"></slot>
-    <v-container fluid>
-      <slot></slot>
-    </v-container>
+    <slot></slot>
   </v-main>
 </template>
 

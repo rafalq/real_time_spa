@@ -72,6 +72,8 @@ export default {
           this.errors = {};
           this.cancelEditQuestionMode();
         })
+        // // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => (this.errors = error.response.data.errors));
     },
 

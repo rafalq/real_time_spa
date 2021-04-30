@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
+import TheParralax from "../components/UI/TheParallax.vue";
 import Login from "../components/auth/Login.vue";
 import Register from "../components/auth/Register.vue";
 import Forum from "../components/forum/Forum.vue";
@@ -10,7 +12,7 @@ import QuestionMode from "../components/forum/question/QuestionMode.vue";
 Vue.use(VueRouter);
 
 const routes = [
-    { path: "/", redirect: "/forum" },
+    { path: "/", component: TheParralax },
     { path: "/login", component: Login, name: "login" },
     { path: "/register", component: Register, name: "register" },
     { path: "/forum", component: Forum, name: "forum" },

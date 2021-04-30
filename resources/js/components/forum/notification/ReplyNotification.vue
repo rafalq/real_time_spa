@@ -23,11 +23,14 @@
         >
           <router-link
             :to="notification.path"
-            class="notificatin__link-to-question"
+            class="notification__link-to-question"
           >
-            <v-list-item-title @click="markAsRead(notification)">{{
-              notification.question
-            }}</v-list-item-title>
+            <v-list-item-title @click="markAsRead(notification)"
+              >{{ notification.question }} by
+              <span class="notification__reply-by">{{
+                notification.replyBy
+              }}</span></v-list-item-title
+            >
           </router-link>
         </v-list-item>
       </v-list>
@@ -43,16 +46,22 @@ export default {
       readNotifications: {},
       unreadNotifications: {},
       unreadNotificationCounter: 0,
+      notificationSound:
+        "https://soundbible.com/mp3/glass_ping-Go445-1207030150.mp3",
     };
   },
   methods: {
     getNotifications() {
-      axios.post("/api/notifications").then((response) => {
-        this.readNotifications = response.data.read_notifications;
-        this.unreadNotifications = response.data.unread_notifications;
-        this.unreadNotificationCounter =
-          response.data.unread_notifications.length;
-      });
+      axios
+        .post("/api/notifications")
+        .then((response) => {
+          this.readNotifications = response.data.read_notifications;
+          this.unreadNotifications = response.data.unread_notifications;
+          this.unreadNotificationCounter =
+            response.data.unread_notifications.length;
+        })
+        // --------- token expired ---------
+        .catch((error) => Exception.handle(error));
     },
     markAsRead(notification) {
       axios
@@ -61,26 +70,39 @@ export default {
           this.unreadNotifications.splice(notification, 1);
           this.readNotifications.push(notification);
           this.unreadNotificationCounter--;
-        });
+        })
+        // --------- token expired ---------
+        .catch((error) => Exception.handle(error));
+    },
+    playSound() {
+      let newReplyAlarm = new Audio(this.notificationSound);
+      newReplyAlarm.muted = true;
+      newReplyAlarm.play();
     },
   },
   mounted() {
     if (User.loggedIn()) {
+      // const notificationSound = new Audio( require('@/assets/foo.ogg') ).play();
+      // const notificationSound = new Audio(
+      //   require("file://../../../../../public/sounds/notification-sound.wav")
+      // );
       this.getNotifications();
-      Echo.private("App.Models.User." + User.getId()).notification(
-        (notification) => {
-          this.unreadNotifications.unshift(notification);
-          this.unreadNotificationCounter++;
-        }
-      );
+      Echo.private("notify-" + User.getId()).notification((notification) => {
+        this.unreadNotifications.unshift(notification);
+        this.unreadNotificationCounter++;
+        this.playSound();
+      });
     }
   },
 };
 </script>
 
 <style scoped>
-.notificatin__link-to-question {
+.notification__link-to-question {
   text-decoration: none;
   color: gray;
 }
-</style>e
+.notification__reply-by {
+  font-weight: bold;
+}
+</style>

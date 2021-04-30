@@ -84,7 +84,8 @@ export default {
       .then((response) => {
         this.categories = response.data.data;
       })
-      .catch((error) => console.error(error));
+      // --------- token expired ---------
+      .catch((error) => Exception.handle(error));
   },
   methods: {
     createQuestion() {
@@ -94,6 +95,8 @@ export default {
           this.$router.push(response.data.path);
           this.errors = {};
         })
+        // // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => (this.errors = error.response.data.errors));
     },
   },

@@ -87,9 +87,6 @@ export default {
     LikeReply,
   },
   props: ["question"],
-  created() {
-    this.listen();
-  },
   data() {
     return {
       questionData: this.question,
@@ -114,17 +111,17 @@ export default {
         this.repliesData.unshift(reply);
       });
 
-      Echo.private("App.Models.User." + User.getId()).notification(
-        (notification) => {
-          this.repliesData.unshift(notification.reply);
-        }
-      );
-
       Echo.channel("reply-deleted-channel").listen("ReplyDeletedEvent", (e) => {
         const replyIndex = this.repliesData.findIndex(
           (reply) => reply.id === e.id
         );
         this.repliesData.splice(replyIndex, 1);
+        EventBus.$emit("update-reply-counter-remove");
+      });
+
+      Echo.channel("new-reply").listen("ReplyAddedEvent", (data) => {
+        this.repliesData.unshift(data.reply);
+        EventBus.$emit("update-reply-counter-added");
       });
     },
     userOwn(userId) {
@@ -148,6 +145,8 @@ export default {
           this.repliesData.splice(replyIndex, 1);
           EventBus.$emit("update-reply-counter-remove");
         })
+        // // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => {
           console.log((this.error = error.response.data));
         });
@@ -167,6 +166,8 @@ export default {
           ].reply = this.dialogReplyInput.body;
           this.replyDialog = false;
         })
+        // // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => {
           console.log((this.error = error));
         });
@@ -198,6 +199,9 @@ export default {
 
       this.replyDialog = false;
     },
+  },
+  created() {
+    this.listen();
   },
 };
 </script>

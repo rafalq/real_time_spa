@@ -120,6 +120,8 @@ export default {
           this.errors = {};
           this.dialog = false;
         })
+        // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => {
           this.errors = error.response.data.errors;
         });
@@ -136,6 +138,8 @@ export default {
           this.dialog = false;
           this.categoryIndex = null;
         })
+        // // --------- token expired ---------
+        // .catch((error) => Exception.handle(error));
         .catch((error) => {
           this.errors = error.response.data.errors;
         });
@@ -150,7 +154,9 @@ export default {
     deleteCategory(slug, index) {
       axios
         .delete(`/api/category/${slug}`)
-        .then((response) => this.categories.splice(index, 1));
+        .then((response) => this.categories.splice(index, 1))
+        // --------- token expired ---------
+        .catch((error) => Exception.handle(error));
     },
     getAllCategories() {
       axios

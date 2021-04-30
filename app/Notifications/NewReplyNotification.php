@@ -55,11 +55,11 @@ class NewReplyNotification extends Notification
 
     public function toBroadcast($notifiable)
     {
-        return new BroadcastMessage([
+        return (new BroadcastMessage([
             'replyBy' => $this->reply->user->name,
             'question' => $this->reply->question->title,
             'path' => $this->reply->question->path,
             'reply' => new ReplyResource($this->reply),
-        ]);
+        ]));
     }
 }
