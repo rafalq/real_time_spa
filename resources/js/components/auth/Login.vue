@@ -1,5 +1,5 @@
 <template>
-  <v-row class="justify-center py-10">
+  <v-row class="justify-center py-10 px-5">
     <v-col cols="12" md="6">
       <v-form @submit.prevent="login">
         <h3 class="text-center mb-4">Log Into Your Account</h3>

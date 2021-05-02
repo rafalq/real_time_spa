@@ -2792,13 +2792,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       readNotifications: {},
       unreadNotifications: {},
-      unreadNotificationCounter: 0,
-      notificationSound: "https://soundbible.com/mp3/glass_ping-Go445-1207030150.mp3"
+      unreadNotificationCounter: 0
     };
   },
   methods: {
@@ -2840,17 +2840,11 @@ __webpack_require__.r(__webpack_exports__);
     var _this3 = this;
 
     if (User.loggedIn()) {
-      // const notificationSound = new Audio( require('@/assets/foo.ogg') ).play();
-      // const notificationSound = new Audio(
-      //   require("file://../../../../../public/sounds/notification-sound.wav")
-      // );
       this.getNotifications();
-      Echo["private"]("notify-" + User.getId()).notification(function (notification) {
+      Echo["private"]("notify-" + User.getName()).notification(function (notification) {
         _this3.unreadNotifications.unshift(notification);
 
         _this3.unreadNotificationCounter++;
-
-        _this3.playSound();
       });
     }
   }
@@ -3450,7 +3444,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/question/".concat(this.questionSlug, "/reply"), {
         body: this.formBody
       }).then(function (response) {
-        EventBus.$emit("new-reply", response.data.reply);
+        EventBus.$emit("new-reply", response.data.reply); // EventBus.$emit("update-notification-counter");
+
         _this4.formBody = "";
 
         _this4.$refs.replyBody.simplemde.value(_this4.formBody);
@@ -3480,10 +3475,7 @@ __webpack_require__.r(__webpack_exports__);
     this.question = this.questionData;
     this.replyCount = this.questionData.reply_count;
     this.listenReplyDeleted();
-    this.listenReplyCreated(); // -------------------- counter --------------------
-    // Echo.private("notify-" + User.getId()).notification((notification) => {
-    //   this.replyCount++;
-    // });
+    this.listenReplyCreated();
   }
 });
 
@@ -3875,6 +3867,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3886,22 +3887,27 @@ __webpack_require__.r(__webpack_exports__);
       links: [{
         path: "/forum",
         name: "Forum",
+        iconName: "forum",
         show: true
       }, {
         path: "/ask",
         name: "Ask",
+        iconName: "help-box",
         show: User.loggedIn()
       }, {
         path: "/logout",
         name: "Logout",
+        iconName: "logout",
         show: User.loggedIn()
       }, {
         path: "/login",
         name: "Login",
+        iconName: "login",
         show: !User.loggedIn()
       }, {
         path: "/register",
         name: "Register",
+        iconName: "account-plus",
         show: !User.loggedIn()
       }]
     };
@@ -3990,6 +3996,10 @@ var app = new Vue({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+var _Echo;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -4003,17 +4013,19 @@ window.axios.defaults.headers.common["Authorization"] = jwtToken;
 
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
+window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default((_Echo = {
   broadcaster: "pusher",
   key: "c190aee1134da12c92e1",
-  cluster: "eu",
+  // cluster: "eu",
+  // key: "myKey",
   forceTLS: false,
-  auth: {
-    headers: {
-      Authorization: jwtToken
-    }
+  wsHost: window.location.hostname,
+  wsPort: 6001
+}, _defineProperty(_Echo, "forceTLS", false), _defineProperty(_Echo, "disableStats", true), _defineProperty(_Echo, "auth", {
+  headers: {
+    Authorization: jwtToken
   }
-});
+}), _Echo));
 
 /***/ }),
 
@@ -48635,7 +48647,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-row",
-    { staticClass: "justify-center py-10" },
+    { staticClass: "justify-center py-10 px-5" },
     [
       _c(
         "v-col",
@@ -48873,7 +48885,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-row",
-        { staticClass: "justify-center py-10" },
+        { staticClass: "justify-center py-10 px-5" },
         [
           _c(
             "v-col",
@@ -49790,47 +49802,53 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-list",
-                _vm._l(_vm.unreadNotifications, function(notification) {
-                  return _c(
-                    "v-list-item",
-                    { key: notification.id },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "notification__link-to-question",
-                          attrs: { to: notification.path }
-                        },
-                        [
-                          _c(
-                            "v-list-item-title",
-                            {
-                              on: {
-                                click: function($event) {
-                                  return _vm.markAsRead(notification)
+                [
+                  _c("div", { staticClass: "text-h4 text-center" }, [
+                    _vm._v("New Replies")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.unreadNotifications, function(notification) {
+                    return _c(
+                      "v-list-item",
+                      { key: notification.id },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "notification__link-to-question",
+                            attrs: { to: notification.path }
+                          },
+                          [
+                            _c(
+                              "v-list-item-title",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    return _vm.markAsRead(notification)
+                                  }
                                 }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(notification.question) +
-                                  " by\n            "
-                              ),
-                              _c(
-                                "span",
-                                { staticClass: "notification__reply-by" },
-                                [_vm._v(_vm._s(notification.replyBy))]
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                }),
-                1
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(notification.question) +
+                                    " by\n            "
+                                ),
+                                _c(
+                                  "span",
+                                  { staticClass: "notification__reply-by" },
+                                  [_vm._v(_vm._s(notification.replyBy))]
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  })
+                ],
+                2
               )
             ],
             1
@@ -51367,7 +51385,10 @@ var render = function() {
               _c(
                 "v-toolbar-title",
                 [
-                  _vm._v("Laravel Forum "),
+                  _c("span", { staticClass: "d-none d-md-inline" }, [
+                    _vm._v("Laravel Forum")
+                  ]),
+                  _vm._v(" "),
                   _c("v-icon", [_vm._v("mdi-laravel")])
                 ],
                 1
@@ -51389,7 +51410,48 @@ var render = function() {
                 class: { display: link.show },
                 attrs: { to: link.path }
               },
-              [_vm._v("\n      " + _vm._s(link.name) + "\n    ")]
+              [
+                _c("span", { staticClass: "d-none d-md-inline" }, [
+                  _vm._v(_vm._s(link.name))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "v-tooltip",
+                  {
+                    attrs: { bottom: "" },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "activator",
+                          fn: function(ref) {
+                            var on = ref.on
+                            var attrs = ref.attrs
+                            return [
+                              _c(
+                                "v-icon",
+                                _vm._g(
+                                  _vm._b(
+                                    { staticClass: "d-sm-flex d-md-none" },
+                                    "v-icon",
+                                    attrs,
+                                    false
+                                  ),
+                                  on
+                                ),
+                                [_vm._v("mdi-" + _vm._s(link.iconName))]
+                              )
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      true
+                    )
+                  },
+                  [_vm._v(" "), _c("span", [_vm._v(_vm._s(link.name))])]
+                )
+              ],
+              1
             )
           })
         ],
@@ -69428,6 +69490,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuetify_lib_components_VIcon__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuetify/lib/components/VIcon */ "./node_modules/vuetify/lib/components/VIcon/VIcon.js");
 /* harmony import */ var vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuetify/lib/components/VGrid */ "./node_modules/vuetify/lib/components/VGrid/VSpacer.js");
 /* harmony import */ var vuetify_lib_components_VToolbar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuetify/lib/components/VToolbar */ "./node_modules/vuetify/lib/components/VToolbar/index.js");
+/* harmony import */ var vuetify_lib_components_VTooltip__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuetify/lib/components/VTooltip */ "./node_modules/vuetify/lib/components/VTooltip/VTooltip.js");
 
 
 
@@ -69453,7 +69516,8 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 
 
-_node_modules_vuetify_loader_lib_runtime_installComponents_js__WEBPACK_IMPORTED_MODULE_4___default()(component, {VAppBar: vuetify_lib_components_VAppBar__WEBPACK_IMPORTED_MODULE_5__.default,VIcon: vuetify_lib_components_VIcon__WEBPACK_IMPORTED_MODULE_6__.default,VSpacer: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_7__.default,VToolbarTitle: vuetify_lib_components_VToolbar__WEBPACK_IMPORTED_MODULE_8__.VToolbarTitle})
+
+_node_modules_vuetify_loader_lib_runtime_installComponents_js__WEBPACK_IMPORTED_MODULE_4___default()(component, {VAppBar: vuetify_lib_components_VAppBar__WEBPACK_IMPORTED_MODULE_5__.default,VIcon: vuetify_lib_components_VIcon__WEBPACK_IMPORTED_MODULE_6__.default,VSpacer: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_7__.default,VToolbarTitle: vuetify_lib_components_VToolbar__WEBPACK_IMPORTED_MODULE_8__.VToolbarTitle,VTooltip: vuetify_lib_components_VTooltip__WEBPACK_IMPORTED_MODULE_9__.default})
 
 
 /* hot reload */

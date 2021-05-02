@@ -17,6 +17,7 @@
       </template>
 
       <v-list>
+        <div class="text-h4 text-center">New Replies</div>
         <v-list-item
           v-for="notification in unreadNotifications"
           :key="notification.id"
@@ -46,8 +47,6 @@ export default {
       readNotifications: {},
       unreadNotifications: {},
       unreadNotificationCounter: 0,
-      notificationSound:
-        "https://soundbible.com/mp3/glass_ping-Go445-1207030150.mp3",
     };
   },
   methods: {
@@ -82,15 +81,10 @@ export default {
   },
   mounted() {
     if (User.loggedIn()) {
-      // const notificationSound = new Audio( require('@/assets/foo.ogg') ).play();
-      // const notificationSound = new Audio(
-      //   require("file://../../../../../public/sounds/notification-sound.wav")
-      // );
       this.getNotifications();
-      Echo.private("notify-" + User.getId()).notification((notification) => {
+      Echo.private("notify-" + User.getName()).notification((notification) => {
         this.unreadNotifications.unshift(notification);
         this.unreadNotificationCounter++;
-        this.playSound();
       });
     }
   },

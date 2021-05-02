@@ -21,8 +21,8 @@ Broadcast::channel('new-reply', function () {
     return true;
 });
 
-Broadcast::channel('notify-{id}', function ($user, $id) {
-    return  (int)$user->id === (int)$id;
+Broadcast::channel('notify-{name}', function ($user, $name) {
+    return  $user->name === $name;
 });
 
 Broadcast::channel('like-channel', function () {

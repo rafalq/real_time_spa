@@ -208,6 +208,7 @@ export default {
         })
         .then((response) => {
           EventBus.$emit("new-reply", response.data.reply);
+          // EventBus.$emit("update-notification-counter");
           this.formBody = "";
           this.$refs.replyBody.simplemde.value(this.formBody);
           this.errors = {};
@@ -230,10 +231,6 @@ export default {
     this.replyCount = this.questionData.reply_count;
     this.listenReplyDeleted();
     this.listenReplyCreated();
-    // -------------------- counter --------------------
-    // Echo.private("notify-" + User.getId()).notification((notification) => {
-    //   this.replyCount++;
-    // });
   },
 };
 </script>

@@ -1,10 +1,11 @@
   <template>
   <div id="parallax-wrapper">
     <v-app-bar app absolute color="blue darken-1" dark>
-      <router-link class="nav-link" to="/"
-        ><v-toolbar-title
-          >Laravel Forum <v-icon>mdi-laravel</v-icon></v-toolbar-title
-        >
+      <router-link class="nav-link" to="/">
+        <v-toolbar-title>
+          <span class="d-none d-md-inline">Laravel Forum</span>
+          <v-icon>mdi-laravel</v-icon>
+        </v-toolbar-title>
       </router-link>
       <v-spacer></v-spacer>
       <reply-notification v-if="loggedIn"></reply-notification>
@@ -15,7 +16,15 @@
         :class="{ display: link.show }"
         class="nav-link hide"
       >
-        {{ link.name }}
+        <span class="d-none d-md-inline">{{ link.name }}</span>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon v-bind="attrs" v-on="on" class="d-sm-flex d-md-none"
+              >mdi-{{ link.iconName }}</v-icon
+            >
+          </template>
+          <span>{{ link.name }}</span>
+        </v-tooltip>
       </router-link>
     </v-app-bar>
   </div>
@@ -30,11 +39,31 @@ export default {
     return {
       loggedIn: User.loggedIn(),
       links: [
-        { path: "/forum", name: "Forum", show: true },
-        { path: "/ask", name: "Ask", show: User.loggedIn() },
-        { path: "/logout", name: "Logout", show: User.loggedIn() },
-        { path: "/login", name: "Login", show: !User.loggedIn() },
-        { path: "/register", name: "Register", show: !User.loggedIn() },
+        { path: "/forum", name: "Forum", iconName: "forum", show: true },
+        {
+          path: "/ask",
+          name: "Ask",
+          iconName: "help-box",
+          show: User.loggedIn(),
+        },
+        {
+          path: "/logout",
+          name: "Logout",
+          iconName: "logout",
+          show: User.loggedIn(),
+        },
+        {
+          path: "/login",
+          name: "Login",
+          iconName: "login",
+          show: !User.loggedIn(),
+        },
+        {
+          path: "/register",
+          name: "Register",
+          iconName: "account-plus",
+          show: !User.loggedIn(),
+        },
       ],
     };
   },

@@ -25,7 +25,7 @@
       </template>
     </v-snackbar>
 
-    <v-row class="justify-center py-10">
+    <v-row class="justify-center py-10 px-5">
       <v-col cols="12" md="6">
         <v-form @submit.prevent="register">
           <h3 class="text-center mb-4">Create New Account</h3>
